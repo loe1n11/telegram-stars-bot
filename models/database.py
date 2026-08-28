@@ -6,26 +6,22 @@ from typing import Dict, List, Optional
 from models.user import User, Transaction
 
 # Simple JSON-based database for demo
-USERS_DB = 'data/users.json'
-TRANSACTIONS_DB = 'data/transactions.json'
+# Use current directory for database files
+USERS_DB = 'users.json'
+TRANSACTIONS_DB = 'transactions.json'
 
 def ensure_db_exists():
-    """Create data directory if it doesn't exist"""
-    try:
-        os.makedirs('data', exist_ok=True)
-    except PermissionError:
-        print("⚠️ Cannot create 'data' folder. Using current directory...")
-        global USERS_DB, TRANSACTIONS_DB
-        USERS_DB = 'users.json'
-        TRANSACTIONS_DB = 'transactions.json'
-    
+    """Create database files if they don't exist"""
     try:
         if not os.path.exists(USERS_DB):
             with open(USERS_DB, 'w', encoding='utf-8') as f:
                 json.dump({}, f)
+                print(f"✅ Created {USERS_DB}")
+        
         if not os.path.exists(TRANSACTIONS_DB):
             with open(TRANSACTIONS_DB, 'w', encoding='utf-8') as f:
                 json.dump({}, f)
+                print(f"✅ Created {TRANSACTIONS_DB}")
     except Exception as e:
         print(f"❌ Database initialization error: {e}")
 
