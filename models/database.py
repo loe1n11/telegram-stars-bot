@@ -11,13 +11,23 @@ TRANSACTIONS_DB = 'data/transactions.json'
 
 def ensure_db_exists():
     """Create data directory if it doesn't exist"""
-    os.makedirs('data', exist_ok=True)
-    if not os.path.exists(USERS_DB):
-        with open(USERS_DB, 'w', encoding='utf-8') as f:
-            json.dump({}, f)
-    if not os.path.exists(TRANSACTIONS_DB):
-        with open(TRANSACTIONS_DB, 'w', encoding='utf-8') as f:
-            json.dump({}, f)
+    try:
+        os.makedirs('data', exist_ok=True)
+    except PermissionError:
+        print("⚠️ Cannot create 'data' folder. Using current directory...")
+        global USERS_DB, TRANSACTIONS_DB
+        USERS_DB = 'users.json'
+        TRANSACTIONS_DB = 'transactions.json'
+    
+    try:
+        if not os.path.exists(USERS_DB):
+            with open(USERS_DB, 'w', encoding='utf-8') as f:
+                json.dump({}, f)
+        if not os.path.exists(TRANSACTIONS_DB):
+            with open(TRANSACTIONS_DB, 'w', encoding='utf-8') as f:
+                json.dump({}, f)
+    except Exception as e:
+        print(f"❌ Database initialization error: {e}")
 
 def get_user(user_id: int) -> Optional[User]:
     """Get user by ID"""
