@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 from config import MESSAGES, BUTTONS
-from keyboards.main import get_back_keyboard, get_main_keyboard
+from keyboards.main import get_back_keyboard
 
 async def info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle info request"""
@@ -12,8 +12,9 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def faq(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle FAQ request"""
+    faq_message = MESSAGES['faq']
     await update.message.reply_html(
-        MESSAGES['faq'],
+        faq_message,
         reply_markup=get_back_keyboard()
     )
 
